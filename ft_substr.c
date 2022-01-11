@@ -7,8 +7,10 @@ char *ft_substr(char const *s, unsigned int start, size_t len)
 	int		i;
 
 	i = 0;
-	if (s ==   NULL || start >= ft_strlen(s))
+	if (s ==   NULL)
 		return (0);
+	if ( start >= ft_strlen(s))
+		return(ft_strdup("\0"));
 	else
 	{
 		if (len > ft_strlen(s))
