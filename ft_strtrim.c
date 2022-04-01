@@ -1,105 +1,103 @@
-
 #include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include "libft.h"
 
-char	*setdup(char const *set)
-{
-	size_t	i;
-	size_t	j;
-	char	*newSet;
-
-	newSet = (char *) malloc(sizeof(set));
-	i = 0;
-	j = 0;
-	while(set[i] != '\0')
-	{
-		if (ft_strchr(&set[i + 1], set[i]) != NULL)
-			i++;
-		else
-		{
-			newSet[j] = set[i];
-			j++;
-			i++;
-		}
-	}
-	newSet[j] = '\0';
-	return (newSet);
-}
-
-size_t	numRepeat(char const *s1, char const *set)
+size_t	cut_right(size_t len, char const *s1, char const *set)
 {
 	int	i;
 	int	j;
-	int	r;
 
-	r = 0;
+	i = (int)ft_strlen (s1);
 	j = 0;
-	i = 0;
-	while (set[i] != '\0')
-    {
-		while (s1[j] != '\0')
+	if (len == 0)
+		return (len);
+	while (i > 0)
+	{
+		while (set[j] != '\0')
 		{
-			if (s1[j] == set[i])
-				r++;
+			if (s1[i - 1] == set[j])
+			{
+				len--;
+				break ;
+			}
 			j++;
 		}
+		if (j == (int)ft_strlen (set))
+			break ;
 		j = 0;
-    	i++;
+		i--;
 	}
-	return (r * sizeof(char));
+	return (len);
 }
 
-char	*getValues(char const *s1, char const *set, char *new)
+size_t	new_len(char const *s1, char const *set)
 {
-	int i;
-	int j;
+	int		i[2];
+	size_t	len;
 
-	i = 0;
-	j = 0;
-	while (s1[i] != '\0')
+	i[0] = 0;
+	i[1] = 0;
+	len = ft_strlen (s1);
+	while (s1[i[0]] != '\0')
 	{
-		if (ft_strchr(set, s1[i]) != 0)
-			i++;
-		else
+		while (set[i[1]] != '\0')
 		{
-			new[j] = s1[i];
-			i++;
-			j++;
+			if (s1[i[0]] == set[i[1]])
+			{
+				len--;
+				break ;
+			}
+			i[1]++;
 		}
+		if (i[1] == (int)ft_strlen (set))
+			break ;
+		i[1] = 0;
+		i[0]++;
 	}
-	new[j] = '\0';
-	return (new);
+	len = cut_right (len, s1, set);
+	return (len);
+}
+
+char	*get_value(char const *s1, char const *set, char *str)
+{
+	int		i[2];
+	size_t	len;
+
+	len = 0;
+	i[0] = 0;
+	i[1] = 0;
+	while (s1[i[0]] != '\0')
+	{
+		while (set[i[1]] != '\0')
+		{
+			if (s1[i[0]] == set[i[1]])
+			{
+				len--;
+				break ;
+			}
+			i[1]++;
+		}
+		if (i[1] == (int)ft_strlen (set))
+			break ;
+		i[1] = 0;
+		i[0]++;
+	}
+	ft_strlcpy (str, &s1[i[0]], new_len (s1, set) + 1);
+	return (str);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-    char	*new;
-	char	*newSet;
-	size_t	r;
+	char	*str;
 
 	if (!s1)
 		return (0);
-	newSet = setdup(set);
-	r = numRepeat(s1, newSet);
-    new = (char *) malloc(ft_strlen(s1) - r + 1);
-	if (new != NULL)
-		new = getValues(s1, newSet, new);
-	return (new);
+	if (!set)
+		return (ft_strdup(s1));
+	if (new_len (s1, set) == 0)
+		return (ft_strdup ("\0"));
+	str = malloc (sizeof(char) * (new_len (s1, set) + 1));
+	if (str == 0)
+		return (0);
+	str = get_value (s1, set, str);
+	return (str);
 }
-
-/* int main()
-{
-	char	s1[] = "lorem ipsum dolor sit amet";
-	char	set[] = "tel";
-	size_t	repetidos;
-
-	repetidos = numRepeat(s1, setdup(set));
-	printf("%i\n", (int)sizeof(s1));
-	printf("%s\n", setdup(set));
-	printf("%i\n", (int)repetidos);
-	printf("%s\n", ft_strtrim(s1, set));
-
-	return (0);
-} */
