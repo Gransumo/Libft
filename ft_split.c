@@ -11,17 +11,19 @@ static int	num_words(char const *s, char c)
 	x = 0;
 	i = 0;
 	while(s[i] == c)
-		i++;	
+		i++;
 	while (s[i] != '\0')
 	{
-		if (s[i] == c)
+		if (s[i] == c && s[i] != '\0')
 		{
-			while (s[i] == c)
-				i++;
 			x++;
+			while (s[i] == c && s[i] != '\0')
+				i++;
 		}
 		i++;
 	}
+	if(s[ft_strlen(s) - 1] != 'c')
+		x++;
 	return (x);
 }
 
@@ -82,7 +84,7 @@ static char	*asign_value(char const *s, char c, int index)
 	return(dest);
 }
 
-char **ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**matrix;
 	int		i;
@@ -90,8 +92,8 @@ char **ft_split(char const *s, char c)
 	i = 0;
 	if (!s)
 		return ((char **)ft_strdup("\0"));
-	matrix = (char **)malloc(sizeof(char *) * (num_words(s, c) + 2));
-	while (i <= num_words(s, c))
+	matrix = (char **)malloc(sizeof(char *) * (num_words(s, c) + 1));
+	while (i < num_words(s, c))
 	{
 		matrix[i] = (char *) malloc (wrd_len(s, c, i));
 		if (matrix[i] == NULL)
@@ -102,30 +104,6 @@ char **ft_split(char const *s, char c)
 		matrix[i] = asign_value(s, c, i);
 		i++;
 	}
+	matrix[i] = ft_strdup("\0");
 	return(matrix);
 }
-
-int main()
-{
-	char s[] = "hola, me gustaria, conocerte, hijo de perra, te odio split,";
-	char **matrix;
-	int i;
-	/* int j;
-	char *s2;
-
-	s2 = malloc(sizeof(char *) * wrd_len(s,'e', 1));
-	s2 = asign_value(s, 'e', 1);
-	j = 0;
-	printf("%i\n", num_words(s, 'e')); */
-	printf("%i\n", (int)wrd_len(s, ',', 0)); 
-	matrix = ft_split(s, 'e');
-	i = 0;
-	while (matrix[i] != '\0')
-	{
-		printf("%s\n", matrix[i]);
-		i++;
-	}
-
-	return (0);
-}
-
