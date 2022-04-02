@@ -20,36 +20,7 @@ int	len_num(int n)
     return (num_len + 1);
 }
 
-/* char	*ft_itoa(int n)
-{
-	char	*str;
-	int		i;
-	long	dividir;
-
-	dividir = n;
-	i = len_num(dividir) - 1;
-	str = malloc(sizeof(char) * (len_num(dividir) + 1));
-	if (str == 0)
-		return (0);
-	if (dividir == -0)
-		str[0] = '0';
-	else if (dividir < 0)
-	{
-		str[0] = '-';
-		dividir = dividir * -1;
-	}
-	while (dividir > 0)
-	{
-		str[i] = (dividir % 10) + '0';
-		dividir = dividir / 10;
-		i--;
-	}
-	str[len_num(n) - 1] = '\0';
-	return (str);
-}
- */
-
-/* char	*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
     int		i;
     long		x;
@@ -77,7 +48,7 @@ int	len_num(int n)
     s1[len_num(n) - 1] = '\0';
     return (s1);
 }
- */
+
 int main()
 {
     int i = -123456789;

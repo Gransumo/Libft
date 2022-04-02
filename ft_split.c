@@ -1,37 +1,39 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
 
-static int	num_words(char const *s, char c)
+static	int	num_words(char const *str, char caracter)
 {
-	int	i;
-	int	x;
+	int	count;
+	size_t	alerta;
+	size_t	i;
 
-	x = 0;
+	count = 0;
+	alerta = 1;
 	i = 0;
-	while (s[i] != '\0')
+	if (str == 0)
+		return (0);
+	while (str[i] != '\0')
 	{
-		if (s[i] == c)
+		if (str[i] == caracter)
+			alerta = 1;
+		else if (alerta == 1)
 		{
-			while (s[i] == c)
-				i++;
-			x++;
+			alerta = 0;
+			count++;
 		}
 		i++;
 	}
-	return (x + 1);
+	return (count);
 }
 
-static size_t wrd_len(char const *s, char c, int index)
+/* static size_t wrd_len(char const *s, char c, int index)
 {
 	int		i;
 	size_t	len;
 
 	len = 0;
 	i = 0;
-	while (s[i] == c)
-		i++;
 	while (index > -1)
 	{
 		if (s[i] != c)
@@ -47,29 +49,50 @@ static size_t wrd_len(char const *s, char c, int index)
 	while (s[i + (int)len] != c && s[i + (int)len] != '\0')
 		len++;
 	return(len);
-}
+} */
 
-static void ft_free(char  **matrix, int index)
+static	size_t	wrd_len(char const *str, char caracter, size_t pos)
 {
-	while (index != 0)
+	size_t	i;
+	size_t	count;
+	size_t	word;
+
+	i = 0;
+	count = 0;
+	word = 0;
+	while (str[i] && word <= pos)
 	{
-		free(matrix[index]);
-		index--;
+		if (pos == word && str[i] != caracter)
+			count++;
+		if ((str[i] == caracter) && (str[i + 1] != caracter))
+			word++;
+		i++;
 	}
-	free(matrix);
+	return (count);
 }
 
-static char	*asign_value(char const *s, char c, int index)
+static void ft_free(char  **matrix)
+{
+	size_t	i;
+	
+	i = 0;
+	while (matrix[i])
+	{
+		free(matrix[i]);
+		i++;
+	}
+	free (matrix);
+}
+
+/* static void	get_value(char const *s, char c, int index, char *dest)
 {
 	int		i;
-	char	*dest;
 	size_t	len;
 
-	len = wrd_len(s, c, index);
+	if (!dest)
+		return (void)(0);
+	len = wrd_len(s, c, index) + 1;
 	i = 0;
-	dest = (char *) malloc (wrd_len(s, c, index));
-	while (s[i] == c)
-		i++;
 	while (index != 0)
 	{
 		i++;
@@ -80,58 +103,75 @@ static char	*asign_value(char const *s, char c, int index)
 			index--;
 		}
 	}
-	ft_strlcpy(dest, &s[i], len + 1);
-	return(dest);
+	ft_strlcpy(dest, &s[i], len);
+} */
+
+static	void	copy_words(const char *cadena, char **str, char c)
+{
+	int	x;
+	size_t	y;
+	int	i;
+
+	x = 0;
+	y = 0;
+	while (x < num_words(cadena, c))
+	{
+		i = 0;
+		while (y < ft_strlen(cadena))
+		{
+			if (cadena[y] == c && cadena[y + 1] != c)
+				break ;
+			if (cadena[y] != c)
+			{	
+				str[x][i] = cadena[y];
+				i++;
+			}
+			y++;
+		}
+		str[x][i] = '\0';
+		x++;
+		y++;
+	}
+	str[x] = NULL;
 }
 
 char	**ft_split(char const *s, char c)
 {
 	char	**matrix;
 	int		i;
-	int		j;
+	char 	*s1;
 
-	j = 0;
 	i = 0;
-	if (!s)
-		return ((char **)ft_strdup("\0"));
-	s = ft_strtrim(s, &c);
-	matrix = (char **)malloc(sizeof(char *) * (num_words(s, c) + 1));
-	while (i < num_words(s, c))
+	s1 = ft_strtrim(s, &c);
+	matrix = malloc(sizeof(char *) * (num_words(s1, c) + 1));
+	while (i < num_words(s1, c))
 	{
-		matrix[i] = (char *) malloc (wrd_len(s, c, i) + 1);
+		matrix[i] = malloc (wrd_len(s1, c, i) + 1);
 		if (matrix[i] == NULL)
 		{
-			ft_free(matrix, i);
+			ft_free(matrix);
+			free(s1);
 			return(0);
 		}
-		matrix[i] = asign_value(s, c, i);
 		i++;
 	}
-	printf("Aqui i vale %i\n", i);
-	i -= 1;
-	printf("Despues i vale %i\n", i);
-	matrix[i] = ft_strdup("\0");
+	copy_words(s1, matrix, c);
+	free(s1);
 	return(matrix);
 }
 
-int main()
+/* int main()
 {
+	char *s = "";
 	int i;
-
-	i = 0;
-	char const *s = ",,,,hola, tio, que tal , men, quiero, verte,,,";
 	char **matrix;
 
 	i = 0;
-	matrix = ft_split(s, ',');
-	s = ft_strtrim(s, ",");
-	//printf("Hay %i palabras\n", num_words(s, ','));
-	/* while(matrix[i] != ft_strdup("\0"))
-	{
+	matrix = ft_split(s, 'v');
+	while (matrix[i] != NULL)
+	{	
 		printf("%s\n", matrix[i]);
 		i++;
-	}  */
-	ft_free(matrix, num_words(s, ','));
-	return(0);
-} 
-
+	}
+	return (0);
+} */
