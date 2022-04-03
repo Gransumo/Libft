@@ -12,38 +12,27 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "libft.h"
-char	*ft_strnstr(char *str, char *to_find, size_t len)
+char	*ft_strnstr(const char *str, const char *to_find, size_t len)
 {
 	size_t		i;
 	size_t		j;
-	char	*dest;
 
 	i = 0;
 	j = 0;
-	dest = 0;
-	if (!to_find)
-		return (str);
-	while (len > i)
+	if (to_find[0] == '\0')
+		return ((char *)str);
+	if (len == 0)
+		return (0);
+	while (i < len && str[i])
 	{
-		if (str[i] == to_find[j])
+		j = 0;
+		while (str[i + j] == to_find[j] && to_find && i + j < len)
+		{
+			if (str[i + j] == to_find[j] && to_find[j + 1] == '\0')
+				return ((char *)str + i);
 			j++;
-		else if (to_find[j] == '\0')
-			return ((char *)str + i - j);
-		else if (str[i] != to_find[j])
-			j = 0;
+		}
 		i++;
 	}
-	if (j == 0 || len == 0)	
-		dest = NULL;
-	return (dest);
+	return (0);
 }
-
-/* int main()
-{
-	char s1[] = "lorem ipsum dolor sit amet";
-	char s2[] = "consectetur";
-
-	printf("%s", ft_strnstr(s1, s2, 27));
-
-	return(0);
-} */

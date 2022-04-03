@@ -27,13 +27,15 @@ static	int	num_words(char const *str, char caracter)
 	return (count);
 }
 
-/* static size_t wrd_len(char const *s, char c, int index)
+static size_t wrd_len(char const *s, char c, int index)
 {
 	int		i;
 	size_t	len;
 
 	len = 0;
 	i = 0;
+	if (!s)
+		return (0);
 	while (index > -1)
 	{
 		if (s[i] != c)
@@ -49,26 +51,6 @@ static	int	num_words(char const *str, char caracter)
 	while (s[i + (int)len] != c && s[i + (int)len] != '\0')
 		len++;
 	return(len);
-} */
-
-static	size_t	wrd_len(char const *str, char caracter, size_t pos)
-{
-	size_t	i;
-	size_t	count;
-	size_t	word;
-
-	i = 0;
-	count = 0;
-	word = 0;
-	while (str[i] && word <= pos)
-	{
-		if (pos == word && str[i] != caracter)
-			count++;
-		if ((str[i] == caracter) && (str[i + 1] != caracter))
-			word++;
-		i++;
-	}
-	return (count);
 }
 
 static void ft_free(char  **matrix)
@@ -84,7 +66,7 @@ static void ft_free(char  **matrix)
 	free (matrix);
 }
 
-/* static void	get_value(char const *s, char c, int index, char *dest)
+static void	get_value(char const *s, char c, int index, char *dest)
 {
 	int		i;
 	size_t	len;
@@ -104,70 +86,44 @@ static void ft_free(char  **matrix)
 		}
 	}
 	ft_strlcpy(dest, &s[i], len);
-} */
-
-static	void	copy_words(const char *cadena, char **str, char c)
-{
-	int	x;
-	size_t	y;
-	int	i;
-
-	x = 0;
-	y = 0;
-	while (x < num_words(cadena, c))
-	{
-		i = 0;
-		while (y < ft_strlen(cadena))
-		{
-			if (cadena[y] == c && cadena[y + 1] != c)
-				break ;
-			if (cadena[y] != c)
-			{	
-				str[x][i] = cadena[y];
-				i++;
-			}
-			y++;
-		}
-		str[x][i] = '\0';
-		x++;
-		y++;
-	}
-	str[x] = NULL;
 }
 
 char	**ft_split(char const *s, char c)
 {
 	char	**matrix;
 	int		i;
-	char 	*s1;
 
 	i = 0;
-	s1 = ft_strtrim(s, &c);
-	matrix = malloc(sizeof(char *) * (num_words(s1, c) + 1));
-	while (i < num_words(s1, c))
+	if (!s)
+		return (NULL);
+	s = ft_strtrim(s, &c);
+	matrix = malloc(sizeof(char *) * (num_words(s, c) + 1));
+	if (!matrix)
+		return (NULL);
+	while (i < num_words(s, c))
 	{
-		matrix[i] = malloc (wrd_len(s1, c, i) + 1);
+		matrix[i] = malloc (wrd_len(s, c, i) + 1);
 		if (matrix[i] == NULL)
 		{
 			ft_free(matrix);
-			free(s1);
 			return(0);
 		}
+		get_value(s, c, i, matrix[i]);
 		i++;
 	}
-	copy_words(s1, matrix, c);
-	free(s1);
+	free(__DECONST(void *, s));
+	matrix[i] = NULL;
 	return(matrix);
 }
 
 /* int main()
 {
-	char *s = "";
+	char *s = "      split       this for   me  !       ";
 	int i;
 	char **matrix;
 
 	i = 0;
-	matrix = ft_split(s, 'v');
+	matrix = ft_split(s, ' ');
 	while (matrix[i] != NULL)
 	{	
 		printf("%s\n", matrix[i]);

@@ -18,15 +18,3 @@ char *ft_strjoin(char const *s1, char const *s2)
 
     return (new);
 }
-/* 
-int main()
-{
-    char s1[] = "lorem ipsum";
-    char s2[] = "dolor sit ameu"; 
-    char *new;
-
-    new = ft_strjoin(s1, s2);
-    printf("%s\n", new);
-
-    return(0);
-} */
