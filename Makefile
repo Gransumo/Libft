@@ -24,13 +24,12 @@ all:	${NAME}
 	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 ${NAME}:	${OBJS}
-	#${CC} -o ${CFLAGS} ${NAME} ${OBJS}
 	${AR} ${NAME} ${OBJS}
 
 #BONUS_PART
 
-bonus: ${OBJS_B}
-	${AR} ${NAME} ${OBJS_B}
+bonus:
+	make $(NAME) SRCS='$(SRCS) $(SRCS_B)'
 clean:
 	${RM} ${OBJS} ${OBJS_B}
 fclean:	clean
