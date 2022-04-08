@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gcastro- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/08 18:41:29 by gcastro-          #+#    #+#             */
+/*   Updated: 2022/04/08 18:41:31 by gcastro-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "libft.h"
-void ft_putendl_fd(char *s, int fd)
+
+void	ft_putendl_fd(char *s, int fd)
 {
-	char c;
+	char	c;
 
 	c = '\n';
 	if (!s)
 		return ;
-	write(fd, s, ft_strlen(s));
-	write(fd, &c, 1);
+	write (fd, s, ft_strlen(s));
+	write (fd, &c, 1);
 }

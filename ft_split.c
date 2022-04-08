@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gcastro- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/08 18:40:41 by gcastro-          #+#    #+#             */
+/*   Updated: 2022/04/08 18:40:42 by gcastro-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
 
-static	int	num_words(char const *str, char caracter)
+static int	num_words(char const *str, char caracter)
 {
-	int	count;
+	int		count;
 	size_t	alerta;
 	size_t	i;
 
@@ -27,7 +39,7 @@ static	int	num_words(char const *str, char caracter)
 	return (count);
 }
 
-static size_t wrd_len(char const *s, char c, int index)
+static size_t	wrd_len(char const *s, char c, int index)
 {
 	int		i;
 	size_t	len;
@@ -42,7 +54,7 @@ static size_t wrd_len(char const *s, char c, int index)
 		{
 			index--;
 			if (index == -1)
-				break;
+				break ;
 			while (s[i] != c)
 				i++;
 		}
@@ -50,17 +62,17 @@ static size_t wrd_len(char const *s, char c, int index)
 	}
 	while (s[i + (int)len] != c && s[i + (int)len] != '\0')
 		len++;
-	return(len);
+	return (len);
 }
 
-static void ft_free(char  **matrix)
+static void	ft_free(char **matrix)
 {
 	size_t	i;
-	
+
 	i = 0;
 	while (matrix[i])
 	{
-		free(matrix[i]);
+		free (matrix[i]);
 		i++;
 	}
 	free (matrix);
@@ -72,8 +84,8 @@ static void	get_value(char const *s, char c, int index, char *dest)
 	size_t	len;
 
 	if (!dest)
-		return (void)(0);
-	len = wrd_len(s, c, index) + 1;
+		return ((void)0);
+	len = wrd_len (s, c, index) + 1;
 	i = 0;
 	while (index != 0)
 	{
@@ -85,7 +97,7 @@ static void	get_value(char const *s, char c, int index, char *dest)
 			index--;
 		}
 	}
-	ft_strlcpy(dest, &s[i], len);
+	ft_strlcpy (dest, &s[i], len);
 }
 
 char	**ft_split(char const *s, char c)
@@ -96,38 +108,22 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	if (!s)
 		return (NULL);
-	s = ft_strtrim(s, &c);
-	matrix = malloc(sizeof(char *) * (num_words(s, c) + 1));
+	s = ft_strtrim (s, &c);
+	matrix = malloc (sizeof (char *) * (num_words(s, c) + 1));
 	if (!matrix)
 		return (NULL);
-	while (i < num_words(s, c))
+	while (i < num_words (s, c))
 	{
-		matrix[i] = malloc (wrd_len(s, c, i) + 1);
+		matrix[i] = malloc (wrd_len (s, c, i) + 1);
 		if (matrix[i] == NULL)
 		{
-			ft_free(matrix);
-			return(0);
+			ft_free (matrix);
+			return (0);
 		}
-		get_value(s, c, i, matrix[i]);
+		get_value (s, c, i, matrix[i]);
 		i++;
 	}
-	free(__DECONST(void *, s));
+	free ((void *)s);
 	matrix[i] = NULL;
-	return(matrix);
+	return (matrix);
 }
-
-/* int main()
-{
-	char *s = "      split       this for   me  !       ";
-	int i;
-	char **matrix;
-
-	i = 0;
-	matrix = ft_split(s, ' ');
-	while (matrix[i] != NULL)
-	{	
-		printf("%s\n", matrix[i]);
-		i++;
-	}
-	return (0);
-} */

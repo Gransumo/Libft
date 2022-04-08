@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
+
 void	*ft_memmove(void *dest, const void *src, size_t n)
 {
 	unsigned char	*aux_d;
@@ -22,7 +22,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	aux_d = (unsigned char *)dest;
 	aux_s = (unsigned char *)src;
 	if (dest == NULL && src == NULL)
-		return(0);
+		return (0);
 	if (dest < src)
 		return (ft_memcpy(dest, src, n));
 	while (i + 1 > 0)

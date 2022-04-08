@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+
 char	*ft_strrchr(const char *s, int c)
 {
-	int	x;
+	int		x;
 	char	*p;
 
 	p = (char *)s;

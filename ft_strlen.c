@@ -6,11 +6,12 @@
 /*   By: gcastro- <gcastro-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 13:35:51 by gcastro-          #+#    #+#             */
-/*   Updated: 2021/11/26 18:03:26 by gcastro-         ###   ########.fr       */
+/*   Updated: 2022/04/08 18:15:31 by gcastro-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+
 size_t	ft_strlen(const char *c)
 {
 	size_t	i;

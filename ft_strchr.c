@@ -13,13 +13,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
+
 char	*ft_strchr(const char *s, int c)
 {
 	size_t	x;
 	size_t	i;
 
 	i = 0;
-	x = ft_strlen((char *)s);
+	x = ft_strlen ((char *)s);
 	while (i != x + 1)
 	{
 		if (*s == (unsigned char)c)

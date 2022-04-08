@@ -6,12 +6,13 @@
 /*   By: gcastro- <gcastro-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 16:37:49 by gcastro-          #+#    #+#             */
-/*   Updated: 2022/01/08 19:20:52 by gcastro-         ###   ########.fr       */
+/*   Updated: 2022/04/08 18:15:17 by gcastro-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
+
 size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {
 	size_t	i;
